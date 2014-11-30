@@ -15,6 +15,8 @@
 		7E713A601A2AA169000BAF65 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E713A5F1A2AA169000BAF65 /* Images.xcassets */; };
 		7E713A631A2AA169000BAF65 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7E713A611A2AA169000BAF65 /* LaunchScreen.xib */; };
 		7E713A6F1A2AA169000BAF65 /* SkiptaculousTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A6E1A2AA169000BAF65 /* SkiptaculousTests.swift */; };
+		7E713A791A2AA5D2000BAF65 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A781A2AA5D2000BAF65 /* UIColorExtension.swift */; };
+		7E713A7B1A2ADEB4000BAF65 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A7A1A2ADEB4000BAF65 /* PlayScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		7E713A681A2AA169000BAF65 /* SkiptaculousTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkiptaculousTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E713A6D1A2AA169000BAF65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7E713A6E1A2AA169000BAF65 /* SkiptaculousTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkiptaculousTests.swift; sourceTree = "<group>"; };
+		7E713A781A2AA5D2000BAF65 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		7E713A7A1A2ADEB4000BAF65 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,11 +88,13 @@
 				7E713A541A2AA169000BAF65 /* AppDelegate.swift */,
 				7E713A561A2AA169000BAF65 /* GameScene.sks */,
 				7E713A581A2AA169000BAF65 /* GameScene.swift */,
+				7E713A781A2AA5D2000BAF65 /* UIColorExtension.swift */,
 				7E713A5A1A2AA169000BAF65 /* GameViewController.swift */,
 				7E713A5C1A2AA169000BAF65 /* Main.storyboard */,
 				7E713A5F1A2AA169000BAF65 /* Images.xcassets */,
 				7E713A611A2AA169000BAF65 /* LaunchScreen.xib */,
 				7E713A521A2AA169000BAF65 /* Supporting Files */,
+				7E713A7A1A2ADEB4000BAF65 /* PlayScene.swift */,
 			);
 			path = Skiptaculous;
 			sourceTree = "<group>";
@@ -220,8 +226,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				7E713A591A2AA169000BAF65 /* GameScene.swift in Sources */,
+				7E713A7B1A2ADEB4000BAF65 /* PlayScene.swift in Sources */,
 				7E713A5B1A2AA169000BAF65 /* GameViewController.swift in Sources */,
 				7E713A551A2AA169000BAF65 /* AppDelegate.swift in Sources */,
+				7E713A791A2AA5D2000BAF65 /* UIColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
