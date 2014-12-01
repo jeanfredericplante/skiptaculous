@@ -12,6 +12,8 @@ class PlayScene: SKScene {
     
     let runningBar = SKSpriteNode(imageNamed:"ground")
     let hero = SKSpriteNode(imageNamed:"hero")
+    let block1 = SKSpriteNode(imageNamed:"block1")
+    let block2 = SKSpriteNode(imageNamed:"block2")
     let heroScale = CGFloat(0.15)
 
     var origRunningBarPosition = CGFloat(0)
@@ -29,6 +31,8 @@ class PlayScene: SKScene {
     override func didMoveToView(view: SKView) {
         self.backgroundColor = UIColor.whiteColor()
         self.xFramePos = CGRectGetMinX(self.frame)
+        
+        // position running bar
         self.runningBar.anchorPoint =  CGPointMake(0,0);
         self.runningBar.position = CGPointMake(
             self.xFramePos,
@@ -37,25 +41,39 @@ class PlayScene: SKScene {
         self.origRunningBarPosition = self.runningBar.position.x
         self.repeatPixels *= -1
         
+        
+        // scale objects
+        scaleObject(self.hero, scale: heroScale)
+        scaleObject(self.block1, scale: heroScale)
+        scaleObject(self.block2, scale: heroScale)
+
+        
+        // position hero
         self.heroBaseline = CGRectGetMaxY(self.runningBar.frame)
-        self.hero.xScale = heroScale
-        self.hero.yScale = self.hero.xScale
         self.hero.position = CGPointMake(self.xFramePos + self.hero.size.width/2,
             self.heroBaseline + self.hero.size.height/2)
 
-        
+        // position blocks
+        self.block1.position = CGPointMake(
+            CGRectGetMaxX(self.frame),
+            getGroundPositionY(block1))
         
         self.addChild(self.runningBar)
         self.addChild(self.hero)
+        self.addChild(self.block1)
         
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-            self.velocityY = -19.0
+            if (objectTouchesGround(self.hero)) {
+                self.velocityY = -19.0
+            }
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        
+        if self.velocityY < -9.0 {
+            self.velocityY = -9.0
+        }
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -90,5 +108,10 @@ class PlayScene: SKScene {
     
     func getGroundPositionY(myblob: SKSpriteNode) -> CGFloat {
         return self.heroBaseline + myblob.size.height/2
+    }
+    
+    func scaleObject(myblob: SKSpriteNode, scale: CGFloat) -> Void {
+        myblob.xScale = scale
+        myblob.yScale = myblob.xScale
     }
 }
