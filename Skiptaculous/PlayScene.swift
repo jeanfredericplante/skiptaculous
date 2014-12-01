@@ -19,6 +19,10 @@ class PlayScene: SKScene {
     var groundSpeed = CGFloat(5)
     var heroBaseline = CGFloat(0)
     var xFramePos =  CGFloat(0)
+    var onGround = true
+    var velocityY = CGFloat(0)
+    var horizontalBarSliding = CGFloat(0)
+    var gravity = CGFloat(0.6)
     
     
     
@@ -46,16 +50,45 @@ class PlayScene: SKScene {
         
     }
     
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+            self.velocityY = -19.0
+    }
+    
+    override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
+        
+    }
+    
     override func update(currentTime: NSTimeInterval) {
         
         // shifts the ground
-        if self.runningBar.position.x <= repeatPixels {
-            self.runningBar.position.x = self.origRunningBarPosition
-        }
-        runningBar.position.x -= CGFloat(self.groundSpeed)
+        horizontalBarSliding += CGFloat(self.groundSpeed)
+        horizontalBarSliding = horizontalBarSliding%repeatPixels
+        runningBar.position.x = self.origRunningBarPosition - horizontalBarSliding
         
         
         // rotate the ball
         self.hero.zRotation -= 2*self.groundSpeed/(self.hero.size.height)
+        
+        // jumps
+        self.velocityY += self.gravity
+        self.hero.position.y -= self.velocityY
+        
+        if (objectTouchesGround(self.hero)) {
+            self.hero.position.y = getGroundPositionY(self.hero)
+            self.velocityY = 0
+        }
+        
+    }
+    
+    func objectTouchesGround(myblob: SKSpriteNode) -> Bool {
+        if (myblob.position.y - myblob.size.height/2) < self.heroBaseline {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func getGroundPositionY(myblob: SKSpriteNode) -> CGFloat {
+        return self.heroBaseline + myblob.size.height/2
     }
 }
