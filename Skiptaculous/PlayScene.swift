@@ -1,6 +1,6 @@
 //
 //  PlayScene.swift
-//  Skiptaculous
+//  Based on Skip Wilson Youtube tutorials
 //
 //  Created by Jean Frederic Plante on 11/29/14.
 //  Copyright (c) 2014 Jean Frederic Plante. All rights reserved.
@@ -25,7 +25,7 @@ class PlayScene: SKScene {
     var velocityY = CGFloat(0)
     var horizontalBarSliding = CGFloat(0)
     var gravity = CGFloat(0.6)
-    
+    var blockStatuses:Dictionary<String, BlockStatus> = [:]
     
     
     override func didMoveToView(view: SKView) {
@@ -53,14 +53,24 @@ class PlayScene: SKScene {
         self.hero.position = CGPointMake(self.xFramePos + self.hero.size.width/2,
             self.heroBaseline + self.hero.size.height/2)
 
-        // position blocks
+        // position blocks and adds them to the dictionary
+        self.block1.name = "block1"
         self.block1.position = CGPointMake(
-            CGRectGetMaxX(self.frame),
+            CGRectGetMaxX(self.frame)+self.block1.size.width,
             getGroundPositionY(block1))
+        
+        self.block2.name = "block2"
+        self.block2.position = CGPointMake(
+            CGRectGetMaxX(self.frame)+self.block2.size.width,
+            getGroundPositionY(block2))
+        
+        blockStatuses["block1"] = BlockStatus(isRunning: false, currentInterval: 0, timeGapForNextRun: positionBlocRandomely())
+        blockStatuses["block2"] = BlockStatus(isRunning: false, currentInterval: 0, timeGapForNextRun: positionBlocRandomely())
         
         self.addChild(self.runningBar)
         self.addChild(self.hero)
         self.addChild(self.block1)
+        self.addChild(self.block2)
         
     }
     
@@ -84,7 +94,7 @@ class PlayScene: SKScene {
         runningBar.position.x = self.origRunningBarPosition - horizontalBarSliding
         
         
-        // rotate the ball
+        // rotate the ball according to ground velocity
         self.hero.zRotation -= 2*self.groundSpeed/(self.hero.size.height)
         
         // jumps
@@ -96,8 +106,11 @@ class PlayScene: SKScene {
             self.velocityY = 0
         }
         
+        // brings on the blocks
+        
     }
     
+    // Private methods
     func objectTouchesGround(myblob: SKSpriteNode) -> Bool {
         if (myblob.position.y - myblob.size.height/2) < self.heroBaseline {
             return true
@@ -114,4 +127,10 @@ class PlayScene: SKScene {
         myblob.xScale = scale
         myblob.yScale = myblob.xScale
     }
+    
+    func positionBlocRandomely() -> UInt32 {
+        var posRange = UInt32(50)...UInt32(200)
+        return posRange.startIndex + arc4random_uniform(posRange.endIndex-posRange.startIndex + 1)
+    }
+    
 }

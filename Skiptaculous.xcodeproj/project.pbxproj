@@ -17,6 +17,8 @@
 		7E713A6F1A2AA169000BAF65 /* SkiptaculousTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A6E1A2AA169000BAF65 /* SkiptaculousTests.swift */; };
 		7E713A791A2AA5D2000BAF65 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A781A2AA5D2000BAF65 /* UIColorExtension.swift */; };
 		7E713A7B1A2ADEB4000BAF65 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A7A1A2ADEB4000BAF65 /* PlayScene.swift */; };
+		7E713A7D1A2D7A1F000BAF65 /* BlockStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A7C1A2D7A1F000BAF65 /* BlockStatus.swift */; };
+		7E713A7F1A2D895B000BAF65 /* BlockComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A7E1A2D895B000BAF65 /* BlockComponent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		7E713A6E1A2AA169000BAF65 /* SkiptaculousTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkiptaculousTests.swift; sourceTree = "<group>"; };
 		7E713A781A2AA5D2000BAF65 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		7E713A7A1A2ADEB4000BAF65 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
+		7E713A7C1A2D7A1F000BAF65 /* BlockStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockStatus.swift; sourceTree = "<group>"; };
+		7E713A7E1A2D895B000BAF65 /* BlockComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockComponent.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +99,8 @@
 				7E713A611A2AA169000BAF65 /* LaunchScreen.xib */,
 				7E713A521A2AA169000BAF65 /* Supporting Files */,
 				7E713A7A1A2ADEB4000BAF65 /* PlayScene.swift */,
+				7E713A7C1A2D7A1F000BAF65 /* BlockStatus.swift */,
+				7E713A7E1A2D895B000BAF65 /* BlockComponent.swift */,
 			);
 			path = Skiptaculous;
 			sourceTree = "<group>";
@@ -225,7 +231,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7E713A7F1A2D895B000BAF65 /* BlockComponent.swift in Sources */,
 				7E713A591A2AA169000BAF65 /* GameScene.swift in Sources */,
+				7E713A7D1A2D7A1F000BAF65 /* BlockStatus.swift in Sources */,
 				7E713A7B1A2ADEB4000BAF65 /* PlayScene.swift in Sources */,
 				7E713A5B1A2AA169000BAF65 /* GameViewController.swift in Sources */,
 				7E713A551A2AA169000BAF65 /* AppDelegate.swift in Sources */,
@@ -423,6 +431,7 @@
 				7E713A741A2AA169000BAF65 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7E713A751A2AA169000BAF65 /* Build configuration list for PBXNativeTarget "SkiptaculousTests" */ = {
 			isa = XCConfigurationList;
@@ -431,6 +440,7 @@
 				7E713A771A2AA169000BAF65 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
