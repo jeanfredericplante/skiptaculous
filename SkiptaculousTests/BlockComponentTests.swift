@@ -37,7 +37,21 @@ class BlockComponentTests: XCTestCase {
     func testBlockIsInView() {
         bc.blockNode.position = CGPointMake(CGRectGetMaxX(scene.frame)-1,0)
         XCTAssertTrue(bc.isWithinFrame(scene), "block should be in view")
+        
+        bc.blockNode.position = CGPointMake(1,0)
+        XCTAssertTrue(bc.isWithinFrame(scene), "block should be in view")
+
     }
+    
+    func testBlockIsShifted() {
+        bc.blockNode.position = CGPointMake(1,0)
+        XCTAssertTrue(bc.isWithinFrame(scene), "block should be in view")
+        bc.moveBlockBy(CGRectGetMaxX(scene.frame)+bc.blockNode.size.width)
+        XCTAssertFalse(bc.isWithinFrame(scene), "block should not be in view after being shifted")
+    
+    }
+    
+    
     
     func testPerformanceExample() {
         // This is an example of a performance test case.

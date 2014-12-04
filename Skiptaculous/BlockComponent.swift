@@ -23,11 +23,13 @@ class BlockComponent {
     }
     
     func isWithinFrame(scene: SKScene) -> Bool {
-        var blobMaxX = CGRectGetMaxX(blockNode.frame)
-        var blobMinX = CGRectGetMinX(blockNode.frame)
-        var atLeastRightSideInView =  (blobMaxX > CGRectGetMinX(scene.frame)) && (blobMaxX <  CGRectGetMaxX(scene.frame))
-        var atLeastLeftSideInView =  (blobMinX > CGRectGetMinX(scene.frame)) && (blobMinX <  CGRectGetMaxX(scene.frame))
-        return atLeastRightSideInView || atLeastLeftSideInView
+        var blobMaxX = CGRectGetMaxX(self.blockNode.frame)
+        var blobMinX = CGRectGetMinX(self.blockNode.frame)
+        var sceneMinX = CGRectGetMinX(scene.frame)
+        var sceneMaxX = CGRectGetMaxX(scene.frame)
+        var leftSideRightofView: Bool =  (blobMinX > sceneMaxX)
+        var rightSideLeftofView: Bool =  (blobMaxX < sceneMinX)
+        return !(leftSideRightofView || rightSideLeftofView)
     }
     
 }
