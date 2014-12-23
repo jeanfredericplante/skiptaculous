@@ -25,7 +25,7 @@ class PlayScene: SKScene {
     var velocityY = CGFloat(0)
     var horizontalBarSliding = CGFloat(0)
     var gravity = CGFloat(0.6)
-    var blockStatuses:Dictionary<String, BlockStatus> = [:]
+    var sceneBlocks:Dictionary<String, BlockComponent> = [:]
     
     
     override func didMoveToView(view: SKView) {
@@ -64,8 +64,8 @@ class PlayScene: SKScene {
             CGRectGetMaxX(self.frame)+self.block2.size.width,
             getGroundPositionY(block2))
         
-        blockStatuses["block1"] = BlockStatus(isRunning: false, currentInterval: 0, timeGapForNextRun: positionBlocRandomely())
-        blockStatuses["block2"] = BlockStatus(isRunning: false, currentInterval: 0, timeGapForNextRun: positionBlocRandomely())
+        sceneBlocks["block1"] = BlockComponent(currentPosition: positionBlocRandomely(), node: self.block1)
+        sceneBlocks["block2"] = BlockComponent(currentPosition: positionBlocRandomely(), node: self.block2)
         
         self.addChild(self.runningBar)
         self.addChild(self.hero)
@@ -119,6 +119,13 @@ class PlayScene: SKScene {
         }
     }
     
+    func blockRunner() {
+        for(block,blockComponent) in self.sceneBlocks
+        {
+            
+        }
+    }
+    
     func getGroundPositionY(myblob: SKSpriteNode) -> CGFloat {
         return self.heroBaseline + myblob.size.height/2
     }
@@ -128,9 +135,9 @@ class PlayScene: SKScene {
         myblob.yScale = myblob.xScale
     }
     
-    func positionBlocRandomely() -> UInt32 {
+    func positionBlocRandomely() -> CGFloat {
         var posRange = UInt32(50)...UInt32(200)
-        return posRange.startIndex + arc4random_uniform(posRange.endIndex-posRange.startIndex + 1)
+        return CGFloat(posRange.startIndex + arc4random_uniform(posRange.endIndex-posRange.startIndex + 1))
     }
     
 }
