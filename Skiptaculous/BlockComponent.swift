@@ -13,10 +13,9 @@ class BlockComponent {
     var isRunning = false
     var blockNode: SKSpriteNode
     
-    init(currentPosition: CGFloat, node: SKSpriteNode) {
+    init(node: SKSpriteNode) {
         self.blockNode = node
-        self.blockNode.position.x = currentPosition
-        
+        self.blockNode.position.x = 0
     }
     
     func getBlockPosition() -> CGFloat {
@@ -50,7 +49,7 @@ class BlockComponent {
         return rightSideLeftofView
     }
     
-    func resetPosition(scene: SKScene, range: UInt32) -> Void {
+    func resetPosition(scene: SKScene, range: UInt32 = 200) -> Void {
         var posRange = UInt32(0)...UInt32(range)
         var sceneMaxX = CGRectGetMaxX(scene.frame)
         var newPosition = CGFloat(posRange.startIndex +

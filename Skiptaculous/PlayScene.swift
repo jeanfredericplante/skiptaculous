@@ -18,6 +18,7 @@ class PlayScene: SKScene {
 
     var origRunningBarPosition = CGFloat(0)
     var repeatPixels = CGFloat(286)
+    var resetBlockRange = UInt32(200)
     var groundSpeed = CGFloat(5)
     var heroBaseline = CGFloat(0)
     var xFramePos =  CGFloat(0)
@@ -64,9 +65,11 @@ class PlayScene: SKScene {
             CGRectGetMaxX(self.frame)+self.block2.size.width,
             getGroundPositionY(block2))
         
-        sceneBlocks["block1"] = BlockComponent(currentPosition: positionBlocRandomely(), node: self.block1)
-        sceneBlocks["block2"] = BlockComponent(currentPosition: positionBlocRandomely(), node: self.block2)
-        
+        sceneBlocks["block1"] = BlockComponent(node: self.block1)
+        sceneBlocks["block1"]?.resetPosition(self, range: resetBlockRange)
+        sceneBlocks["block2"] = BlockComponent(node: self.block2)
+        sceneBlocks["block2"]?.resetPosition(self, range: resetBlockRange)
+
         self.addChild(self.runningBar)
         self.addChild(self.hero)
         self.addChild(self.block1)
@@ -107,7 +110,7 @@ class PlayScene: SKScene {
         }
         
         // brings on the blocks
-        
+        blockRunner(CGFloat(self.groundSpeed))
     }
     
     // Private methods
@@ -119,9 +122,18 @@ class PlayScene: SKScene {
         }
     }
     
-    func blockRunner() {
+    func blockRunner(pixelsToSlide: CGFloat) {
         for(block,blockComponent) in self.sceneBlocks
         {
+
+            if blockComponent.shouldBeReset(self)
+            {
+                blockComponent.resetPosition(self, range: resetBlockRange)
+            } else  // Should be shifted
+
+            {
+                blockComponent.moveBlockBy(-pixelsToSlide)
+            }
             
         }
     }

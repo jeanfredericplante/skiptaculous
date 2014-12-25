@@ -13,7 +13,7 @@ import SpriteKit
 class BlockComponentTests: XCTestCase {
     
     let scene = SKScene(size: CGSize(width: 130, height: 300))
-    var bc = BlockComponent(currentPosition: 0, node: SKSpriteNode(imageNamed:"block1"))
+    var bc = BlockComponent(node: SKSpriteNode(imageNamed:"block1"))
 
     override func setUp() {
        super.setUp()
@@ -28,6 +28,7 @@ class BlockComponentTests: XCTestCase {
         // This is an example of a functional test case.
 
     }
+
     
     func testGetBlockPosition() {
         bc.blockNode.position = CGPointMake(0,0)
@@ -53,6 +54,7 @@ class BlockComponentTests: XCTestCase {
 
     }
     
+    
     func testBlockNeedsToBeReset() {
         bc.blockNode.position = CGPointMake(-bc.blockNode.size.width-1,0)
         XCTAssertTrue(bc.shouldBeReset(scene), "block position should be reset")
@@ -72,7 +74,7 @@ class BlockComponentTests: XCTestCase {
     }
     
     func testBlockIsReset(){
-        bc.resetPosition(scene, range: 200);
+        bc.resetPosition(scene);
         XCTAssertFalse(bc.isWithinFrame(scene), "block should not be in view after being reset")
     }
     
