@@ -15,10 +15,11 @@ class PlayScene: SKScene {
     let block1 = SKSpriteNode(imageNamed:"block1")
     let block2 = SKSpriteNode(imageNamed:"block2")
     let heroScale = CGFloat(0.15)
-
+    let scoreText = SKLabelNode(fontNamed: "Chalkduster")
+    
     var origRunningBarPosition = CGFloat(0)
     var repeatPixels = CGFloat(286)
-    var resetBlockRange = UInt32(200)
+    var resetBlockRange = UInt32(400)
     var groundSpeed = CGFloat(5)
     var heroBaseline = CGFloat(0)
     var xFramePos =  CGFloat(0)
@@ -27,6 +28,9 @@ class PlayScene: SKScene {
     var horizontalBarSliding = CGFloat(0)
     var gravity = CGFloat(0.6)
     var sceneBlocks:Dictionary<String, BlockComponent> = [:]
+    var score = 0
+    
+    
     
     
     override func didMoveToView(view: SKView) {
@@ -70,10 +74,23 @@ class PlayScene: SKScene {
         sceneBlocks["block2"] = BlockComponent(node: self.block2)
         sceneBlocks["block2"]?.resetPosition(self, range: resetBlockRange)
 
+        
+        // adds the score
+        self.scoreText.text = String(score)
+        self.scoreText.fontSize = 42
+        self.scoreText.fontColor = UIColor.grayColor()
+        self.scoreText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMaxY(self.frame)-2*self.scoreText.frame.height)
+        
+        // add nodes for display
+        self.addChild(self.scoreText)
+
         self.addChild(self.runningBar)
         self.addChild(self.hero)
         self.addChild(self.block1)
         self.addChild(self.block2)
+        
+
+        
         
     }
     
@@ -130,7 +147,6 @@ class PlayScene: SKScene {
             {
                 blockComponent.resetPosition(self, range: resetBlockRange)
             } else  // Should be shifted
-
             {
                 blockComponent.moveBlockBy(-pixelsToSlide)
             }

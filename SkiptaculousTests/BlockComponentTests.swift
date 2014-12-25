@@ -78,6 +78,10 @@ class BlockComponentTests: XCTestCase {
         XCTAssertFalse(bc.isWithinFrame(scene), "block should not be in view after being reset")
     }
     
+    func testCollisionWithNode() {
+        
+    }
+    
     
     
     func testPerformanceExample() {
