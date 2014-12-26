@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class PlayScene: SKScene {
+class PlayScene: SKScene, SKPhysicsContactDelegate {
     
     let runningBar = SKSpriteNode(imageNamed:"ground")
     let hero = SKSpriteNode(imageNamed:"hero")
@@ -26,11 +26,15 @@ class PlayScene: SKScene {
     var onGround = true
     var velocityY = CGFloat(0)
     var horizontalBarSliding = CGFloat(0)
-    var gravity = CGFloat(0.6)
+    var fakeGravity = CGFloat(0.6)
     var sceneBlocks:Dictionary<String, BlockComponent> = [:]
     var score = 0
     
-    
+    enum ColliderType:UInt32   {
+        case Hero = 1
+        case Block = 2
+        case Ground = 3
+    }
     
     
     override func didMoveToView(view: SKView) {
@@ -57,7 +61,8 @@ class PlayScene: SKScene {
         self.heroBaseline = CGRectGetMaxY(self.runningBar.frame)
         self.hero.position = CGPointMake(self.xFramePos + self.hero.size.width/2,
             self.heroBaseline + self.hero.size.height/2)
-
+        
+        
         // position blocks and adds them to the dictionary
         self.block1.name = "block1"
         self.block1.position = CGPointMake(
@@ -73,6 +78,38 @@ class PlayScene: SKScene {
         sceneBlocks["block1"]?.resetPosition(self, range: resetBlockRange)
         sceneBlocks["block2"] = BlockComponent(node: self.block2)
         sceneBlocks["block2"]?.resetPosition(self, range: resetBlockRange)
+
+        // sets the collision detection
+        self.physicsWorld.contactDelegate = self
+        
+        // for the hero
+        self.hero.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(self.hero.size.width / 2))
+        self.hero.physicsBody?.affectedByGravity = true
+        self.hero.physicsBody?.categoryBitMask = ColliderType.Hero.rawValue
+       self.hero.physicsBody?.collisionBitMask = ColliderType.Block.rawValue | ColliderType.Ground.rawValue
+        self.hero.physicsBody?.contactTestBitMask = ColliderType.Block.rawValue | ColliderType.Ground.rawValue
+
+        // for the ground
+        var rectHeight = self.heroBaseline - CGRectGetMinY(self.frame)
+        var rectWidth = self.runningBar.size.width
+        var rectXMid = CGFloat(rectWidth/2)
+        var rectYMid = CGFloat(rectHeight/2 - self.runningBar.position.y)
+        self.runningBar.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: rectWidth, height: rectHeight), center: CGPointMake(rectXMid, rectYMid))
+        self.runningBar.physicsBody?.dynamic = false
+        self.runningBar.physicsBody?.categoryBitMask = ColliderType.Ground.rawValue
+        self.runningBar.physicsBody?.collisionBitMask  = ColliderType.Hero.rawValue
+        self.runningBar.physicsBody?.contactTestBitMask = ColliderType.Hero.rawValue
+       
+        // for the blocks
+        for (blockName, blockComponent) in self.sceneBlocks
+        {
+            var blockNode = blockComponent.blockNode
+             blockNode.physicsBody  = SKPhysicsBody(rectangleOfSize: blockNode.size)
+            blockNode.physicsBody?.dynamic=false
+            blockNode.physicsBody?.categoryBitMask = ColliderType.Block.rawValue
+            blockNode.physicsBody?.contactTestBitMask = ColliderType.Hero.rawValue
+            blockNode.physicsBody?.collisionBitMask = ColliderType.Hero.rawValue
+        }
 
         
         // adds the score
@@ -95,15 +132,22 @@ class PlayScene: SKScene {
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        var impulseX = CGFloat(0)
+        var impulseY = CGFloat(100)
+        self.hero.physicsBody?.applyImpulse(CGVectorMake(impulseX, impulseY))
+        
+
+        
             if (objectTouchesGround(self.hero)) {
-                self.velocityY = -19.0
-            }
+                // self.velocityY = -19.0
+              }
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
-        if self.velocityY < -9.0 {
-            self.velocityY = -9.0
-        }
+ //       self.hero.physicsBody?.applyImpulse(CGVectorMake(0, 0))
+//        if self.velocityY < -9.0 {
+//            self.velocityY = -9.0
+//        }
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -118,14 +162,14 @@ class PlayScene: SKScene {
         self.hero.zRotation -= 2*self.groundSpeed/(self.hero.size.height)
         
         // jumps
-        self.velocityY += self.gravity
-        self.hero.position.y -= self.velocityY
-        
-        if (objectTouchesGround(self.hero)) {
-            self.hero.position.y = getGroundPositionY(self.hero)
-            self.velocityY = 0
-        }
-        
+//        self.velocityY += self.fakeGravity
+//        self.hero.position.y -= self.velocityY
+//        
+//        if (objectTouchesGround(self.hero)) {
+//            self.hero.position.y = getGroundPositionY(self.hero)
+//            self.velocityY = 0
+//        }
+//        
         // brings on the blocks
         blockRunner(CGFloat(self.groundSpeed))
     }
