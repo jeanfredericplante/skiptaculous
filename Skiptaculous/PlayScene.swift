@@ -25,6 +25,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var xFramePos =  CGFloat(0)
     var onGround = true
     var heroHitABlock = false
+    var heroHitBlock1 = false
+    var heroHitBlock2 = false
     var velocityY = CGFloat(0)
     var horizontalBarSliding = CGFloat(0)
     var fakeGravity = CGFloat(0.6)
@@ -106,7 +108,27 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         (contact.bodyA.categoryBitMask == ColliderType.Block.rawValue)
         {
             heroHitABlock = true
-           // self.scoreText.text = "hit a block"
+            let prefixBlockName = "block"
+            let bodyAName = contact.bodyA.node?.name
+            let bodyBName = contact.bodyB.node?.name
+            var bodyHit:String? = nil
+            
+            if (bodyAName?.hasPrefix(prefixBlockName) != nil) {
+                bodyHit = bodyAName
+            } else if (bodyBName?.hasPrefix(prefixBlockName) != nil)
+            {
+                bodyHit = bodyBName
+            }
+           //  sceneBlocks[bodyHit]
+            switch bodyHit as String! {
+            case "block1":
+                heroHitBlock1 = true
+            case "block2":
+                heroHitBlock2 = true
+            default:
+                println("noop")
+            }
+            
             
         } else if (contact.bodyA.categoryBitMask == ColliderType.Ground.rawValue) ||
         (contact.bodyA.categoryBitMask == ColliderType.Ground.rawValue)
@@ -114,15 +136,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
             if !onGround
             {
                 onGround = true // hero now touches the ground
-                if !heroHitABlock
-                {
-                    // hero jumped and touched the ground without hitting a block
-                    score += 5
-                    self.scoreText.text = String(score)
-                }
+                updateScore()
                 
-                heroHitABlock = false // reset the hit count
-               // self.scoreText.text = "on ground"
             }
         }
     }
@@ -148,6 +163,43 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func updateScore() {
+//        for(block,blockComponent) in self.sceneBlocks
+//        {
+//            if blockComponent.isLeftOfNode(hero)
+//            {
+//                if block == "block1"
+//                {
+//                    if !heroHitBlock1
+//                    {
+//                        score += 5
+//                        heroHitBlock1 = false
+//                    }
+//                    
+//                } else if block == "block2"
+//                {
+//                    if !heroHitBlock2
+//                    {
+//                    score += 7
+//                    heroHitBlock2 = false
+//                    }
+//                }
+//            }
+//            
+//        }
+//        self.scoreText.text = String(score)
+
+        if !heroHitABlock
+        {
+            // hero jumped and touched the ground without hitting a block
+            score += 5
+            self.scoreText.text = String(score)
+        }
+        heroHitABlock = false // reset the hit count
+    }
+    
+    
+    
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
 
             if (onGround) {
@@ -172,6 +224,9 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         self.hero.zRotation -= 2*self.groundSpeed/(self.hero.size.height)
         
         blockRunner(CGFloat(self.groundSpeed))
+        
+        if objectLeftOfScene(hero)
+        { restart() }
     }
     
     // Private methods
@@ -179,6 +234,14 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         if (myblob.position.y - myblob.size.height/2) < self.heroBaseline {
             return true
         } else {
+            return false
+        }
+    }
+    
+    func objectLeftOfScene(myblob: SKSpriteNode) -> Bool {
+         if (myblob.position.x + myblob.size.width) < CGRectGetMinX(self.frame) {
+            return true
+         } else {
             return false
         }
     }

@@ -11,6 +11,7 @@ import SpriteKit
 
 class BlockComponent {
     var isRunning = false
+    var isHit = false
     var blockNode: SKSpriteNode
     
     init(node: SKSpriteNode) {
@@ -56,6 +57,13 @@ class BlockComponent {
             arc4random_uniform(posRange.endIndex-posRange.startIndex + 1))
         newPosition += sceneMaxX + self.blockNode.size.width
         self.setBlockPosition(CGFloat(newPosition))
+    }
+
+    func isLeftOfNode(hero: SKNode) -> Bool {
+        var heroMinX = CGRectGetMinX(hero.frame)
+        var blockMaxX = CGRectGetMaxX(self.blockNode.frame)
+        return heroMinX > blockMaxX
+
     }
     
 }
