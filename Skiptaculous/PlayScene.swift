@@ -24,6 +24,7 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     var heroBaseline = CGFloat(0)
     var xFramePos =  CGFloat(0)
     var onGround = true
+    var heroHitABlock = false
     var velocityY = CGFloat(0)
     var horizontalBarSliding = CGFloat(0)
     var fakeGravity = CGFloat(0.6)
@@ -81,36 +82,8 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
 
         // sets the collision detection
         self.physicsWorld.contactDelegate = self
+        setCollisionDetection()
         
-        // for the hero
-        self.hero.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(self.hero.size.width / 2))
-        self.hero.physicsBody?.affectedByGravity = true
-        self.hero.physicsBody?.categoryBitMask = ColliderType.Hero.rawValue
-       self.hero.physicsBody?.collisionBitMask = ColliderType.Block.rawValue | ColliderType.Ground.rawValue
-        self.hero.physicsBody?.contactTestBitMask = ColliderType.Block.rawValue | ColliderType.Ground.rawValue
-
-        // for the ground
-        var rectHeight = self.heroBaseline - CGRectGetMinY(self.frame)
-        var rectWidth = self.runningBar.size.width
-        var rectXMid = CGFloat(rectWidth/2)
-        var rectYMid = CGFloat(rectHeight/2 - self.runningBar.position.y)
-        self.runningBar.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: rectWidth, height: rectHeight), center: CGPointMake(rectXMid, rectYMid))
-        self.runningBar.physicsBody?.dynamic = false
-        self.runningBar.physicsBody?.categoryBitMask = ColliderType.Ground.rawValue
-        self.runningBar.physicsBody?.collisionBitMask  = ColliderType.Hero.rawValue
-        self.runningBar.physicsBody?.contactTestBitMask = ColliderType.Hero.rawValue
-       
-        // for the blocks
-        for (blockName, blockComponent) in self.sceneBlocks
-        {
-            var blockNode = blockComponent.blockNode
-             blockNode.physicsBody  = SKPhysicsBody(rectangleOfSize: blockNode.size)
-            blockNode.physicsBody?.dynamic=false
-            blockNode.physicsBody?.categoryBitMask = ColliderType.Block.rawValue
-            blockNode.physicsBody?.contactTestBitMask = ColliderType.Hero.rawValue
-            blockNode.physicsBody?.collisionBitMask = ColliderType.Hero.rawValue
-        }
-
         
         // adds the score
         self.scoreText.text = String(score)
@@ -120,34 +93,71 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         
         // add nodes for display
         self.addChild(self.scoreText)
-
         self.addChild(self.runningBar)
         self.addChild(self.hero)
         self.addChild(self.block1)
         self.addChild(self.block2)
+       
         
-
-        
-        
+    }
+    
+    func  didBeginContact(contact: SKPhysicsContact) {
+        if (contact.bodyA.categoryBitMask == ColliderType.Block.rawValue) ||
+        (contact.bodyA.categoryBitMask == ColliderType.Block.rawValue)
+        {
+            heroHitABlock = true
+           // self.scoreText.text = "hit a block"
+            
+        } else if (contact.bodyA.categoryBitMask == ColliderType.Ground.rawValue) ||
+        (contact.bodyA.categoryBitMask == ColliderType.Ground.rawValue)
+        {
+            if !onGround
+            {
+                onGround = true // hero now touches the ground
+                if !heroHitABlock
+                {
+                    // hero jumped and touched the ground without hitting a block
+                    score += 5
+                    self.scoreText.text = String(score)
+                }
+                
+                heroHitABlock = false // reset the hit count
+               // self.scoreText.text = "on ground"
+            }
+        }
+    }
+    
+    func didEndContact(contact: SKPhysicsContact) {
+        if (contact.bodyA.categoryBitMask == ColliderType.Ground.rawValue) ||
+        (contact.bodyB.categoryBitMask == ColliderType.Ground.rawValue)
+        {
+            onGround = false
+            //self.scoreText.text = "off ground"
+        }
+    }
+    
+    func restart() {
+        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene
+        {
+            let skView = self.view as SKView!
+            skView.ignoresSiblingOrder = true
+            scene.size = skView.bounds.size
+            scene.scaleMode = SKSceneScaleMode.AspectFill
+            skView.presentScene(scene)
+            
+        }
     }
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        var impulseX = CGFloat(0)
-        var impulseY = CGFloat(100)
-        self.hero.physicsBody?.applyImpulse(CGVectorMake(impulseX, impulseY))
-        
 
-        
-            if (objectTouchesGround(self.hero)) {
-                // self.velocityY = -19.0
-              }
+            if (onGround) {
+                var impulseX = CGFloat(5)
+                var impulseY = CGFloat(100)
+                self.hero.physicsBody?.applyImpulse(CGVectorMake(impulseX, impulseY))
+            }
     }
     
     override func touchesEnded(touches: NSSet, withEvent event: UIEvent) {
- //       self.hero.physicsBody?.applyImpulse(CGVectorMake(0, 0))
-//        if self.velocityY < -9.0 {
-//            self.velocityY = -9.0
-//        }
     }
     
     override func update(currentTime: NSTimeInterval) {
@@ -161,16 +171,6 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
         // rotate the ball according to ground velocity
         self.hero.zRotation -= 2*self.groundSpeed/(self.hero.size.height)
         
-        // jumps
-//        self.velocityY += self.fakeGravity
-//        self.hero.position.y -= self.velocityY
-//        
-//        if (objectTouchesGround(self.hero)) {
-//            self.hero.position.y = getGroundPositionY(self.hero)
-//            self.velocityY = 0
-//        }
-//        
-        // brings on the blocks
         blockRunner(CGFloat(self.groundSpeed))
     }
     
@@ -210,6 +210,36 @@ class PlayScene: SKScene, SKPhysicsContactDelegate {
     func positionBlocRandomely() -> CGFloat {
         var posRange = UInt32(50)...UInt32(200)
         return CGFloat(posRange.startIndex + arc4random_uniform(posRange.endIndex-posRange.startIndex + 1))
+    }
+    
+    func setCollisionDetection() {
+        // for the hero
+        self.hero.physicsBody = SKPhysicsBody(circleOfRadius: CGFloat(self.hero.size.width / 2))
+        self.hero.physicsBody?.affectedByGravity = true
+        self.hero.physicsBody?.categoryBitMask = ColliderType.Hero.rawValue
+        self.hero.physicsBody?.collisionBitMask = ColliderType.Block.rawValue
+        self.hero.physicsBody?.contactTestBitMask = ColliderType.Block.rawValue
+        
+        // for the ground
+        var rectHeight = self.heroBaseline - CGRectGetMinY(self.frame)
+        var rectWidth = self.runningBar.size.width
+        var rectXMid = CGFloat(rectWidth/2)
+        var rectYMid = CGFloat(rectHeight/2 - self.runningBar.position.y)
+        self.runningBar.physicsBody = SKPhysicsBody(rectangleOfSize: CGSize(width: rectWidth, height: rectHeight), center: CGPointMake(rectXMid, rectYMid))
+        self.runningBar.physicsBody?.dynamic = false
+        self.runningBar.physicsBody?.categoryBitMask = ColliderType.Ground.rawValue
+        
+        // for the blocks
+        for (blockName, blockComponent) in self.sceneBlocks
+        {
+            var blockNode = blockComponent.blockNode
+            blockNode.physicsBody  = SKPhysicsBody(rectangleOfSize: blockNode.size)
+            blockNode.physicsBody?.dynamic=false
+            blockNode.physicsBody?.categoryBitMask = ColliderType.Block.rawValue
+            blockNode.physicsBody?.contactTestBitMask = ColliderType.Hero.rawValue
+            blockNode.physicsBody?.collisionBitMask = ColliderType.Hero.rawValue
+        }
+
     }
     
 }
