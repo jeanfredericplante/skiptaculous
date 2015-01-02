@@ -34,6 +34,7 @@ class GameViewController: UIViewController {
             // Configure the view.
             let skView = self.view as SKView
             skView.showsFPS = false
+            
            // scene.view = skView.bounds.size
             skView.showsNodeCount = false
             
@@ -42,6 +43,9 @@ class GameViewController: UIViewController {
             
             /* Set the scale mode to scale to fit the window */
             scene.scaleMode = .AspectFill
+            
+            skView.showsPhysics = false
+
             
             skView.presentScene(scene)
         }

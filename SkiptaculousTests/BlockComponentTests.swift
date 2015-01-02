@@ -14,6 +14,7 @@ class BlockComponentTests: XCTestCase {
     
     let scene = SKScene(size: CGSize(width: 130, height: 300))
     var bc = BlockComponent(node: SKSpriteNode(imageNamed:"block1"))
+    var hero = SKSpriteNode(imageNamed:"hero")
 
     override func setUp() {
        super.setUp()
@@ -76,6 +77,19 @@ class BlockComponentTests: XCTestCase {
     func testBlockIsReset(){
         bc.resetPosition(scene);
         XCTAssertFalse(bc.isWithinFrame(scene), "block should not be in view after being reset")
+    }
+    
+    func testBlockIsLeftOfNode() {
+        bc.blockNode.position = CGPointMake(5,0)
+        hero.position.x = CGFloat(CGRectGetMaxX(bc.blockNode.frame)+5)
+        XCTAssertTrue(bc.isLeftOfNode(hero), "block should be left of hero")
+        hero.position.x = CGFloat(0)
+        XCTAssertFalse(bc.isLeftOfNode(hero), "block should not be left of hero")
+    }
+    
+    
+    func testCollisionWithNode() {
+        
     }
     
     

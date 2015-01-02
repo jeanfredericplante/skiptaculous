@@ -11,6 +11,8 @@
 		7E13D2C31A2EEBFF00613D0C /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7E713A561A2AA169000BAF65 /* GameScene.sks */; };
 		7E13D2C41A2EEC0500613D0C /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A781A2AA5D2000BAF65 /* UIColorExtension.swift */; };
 		7E13D2C51A2EEC0C00613D0C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E713A5F1A2AA169000BAF65 /* Images.xcassets */; };
+		7E15C11B1A54D9520000BEDA /* screenshot2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E15C11A1A54D9520000BEDA /* screenshot2.png */; };
+		7E15C11D1A54D9670000BEDA /* screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7E15C11C1A54D9670000BEDA /* screenshot1.png */; };
 		7E713A551A2AA169000BAF65 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A541A2AA169000BAF65 /* AppDelegate.swift */; };
 		7E713A571A2AA169000BAF65 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 7E713A561A2AA169000BAF65 /* GameScene.sks */; };
 		7E713A591A2AA169000BAF65 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E713A581A2AA169000BAF65 /* GameScene.swift */; };
@@ -42,6 +44,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7E15C11A1A54D9520000BEDA /* screenshot2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot2.png; sourceTree = "<group>"; };
+		7E15C11C1A54D9670000BEDA /* screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = screenshot1.png; sourceTree = "<group>"; };
 		7E713A4F1A2AA169000BAF65 /* Skiptaculous.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Skiptaculous.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7E713A531A2AA169000BAF65 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7E713A541A2AA169000BAF65 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -79,9 +83,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E15C1191A54D9310000BEDA /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				7E15C11A1A54D9520000BEDA /* screenshot2.png */,
+				7E15C11C1A54D9670000BEDA /* screenshot1.png */,
+			);
+			name = Screenshots;
+			sourceTree = "<group>";
+		};
 		7E713A461A2AA169000BAF65 = {
 			isa = PBXGroup;
 			children = (
+				7E15C1191A54D9310000BEDA /* Screenshots */,
 				7E713A511A2AA169000BAF65 /* Skiptaculous */,
 				7E713A6B1A2AA169000BAF65 /* SkiptaculousTests */,
 				7E713A501A2AA169000BAF65 /* Products */,
@@ -226,6 +240,8 @@
 				7E713A601A2AA169000BAF65 /* Images.xcassets in Resources */,
 				7E713A571A2AA169000BAF65 /* GameScene.sks in Resources */,
 				7E713A5E1A2AA169000BAF65 /* Main.storyboard in Resources */,
+				7E15C11D1A54D9670000BEDA /* screenshot1.png in Resources */,
+				7E15C11B1A54D9520000BEDA /* screenshot2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
